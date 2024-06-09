@@ -18,12 +18,12 @@ export class SearchParams {
   protected _sortDirection: SortDirection | null
   protected _filter: string | null
 
-  constructor(props: SearchProps) {
-    this._page = props.page ?? 1
-    this._perPage = props.perPage ?? 15
-    this._sort = props.sort ?? null
-    this._sortDirection = props.sortDirection ?? 'desc'
-    this._filter = props.filter ?? null
+  constructor(props: SearchProps = {}) {
+    this.page = props.page
+    this.perPage = props.perPage
+    this.sort = props.sort
+    this.sortDirection = props.sortDirection
+    this.filter = props.filter
   }
 
   get page(): number {
@@ -41,13 +41,14 @@ export class SearchParams {
     return this._perPage
   }
   private set perPage(value: number) {
-    let _perPage = +value
+    let _perPage = value === (true as any) ? this._perPage : +value
     if (
       Number.isNaN(_perPage) ||
       _perPage <= 0 ||
+      _perPage === undefined ||
       parseInt(_perPage as any) !== _perPage
     ) {
-      _perPage = this._perPage
+      _perPage = 15
     }
     this._perPage = _perPage
   }
@@ -79,12 +80,4 @@ export class SearchParams {
     this._filter =
       value === null || value === undefined || value === '' ? null : `${value}`
   }
-}
-
-export interface SearchableRepositoryInterface<
-  E extends Entity,
-  SearchInput,
-  SearchOutput,
-> extends RepositoryInterface<E> {
-  search(props: SearchInput): Promise<SearchOutput>
 }

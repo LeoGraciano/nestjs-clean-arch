@@ -1,7 +1,6 @@
 import { Entity } from '../domain/entities/entity'
 import { InMemoryRepository } from './in-memory.repository'
-
-import { SearchableRepositoryInterface } from './searchable-repository-contracts'
+import { SearchableRepositoryInterface } from './searchable-contracts'
 
 export abstract class InMemorySearchableRepository<E extends Entity>
   extends InMemoryRepository<E>

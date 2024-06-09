@@ -9,7 +9,7 @@ export abstract class Entity<Props = any> {
     this._id = id || uuidV4()
   }
 
-  get id() {
+  get id(): string {
     return this._id
   }
 

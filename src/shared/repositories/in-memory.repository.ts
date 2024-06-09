@@ -1,5 +1,5 @@
 import { Entity } from '../domain/entities/entity'
-import { NotFoundError } from '../domain/errors/not-fond-error'
+import { NotFoundError } from '../domain/errors/not-found-error'
 import { RepositoryInterface } from './repository-contracts'
 
 export abstract class InMemoryRepository<E extends Entity>
@@ -30,9 +30,7 @@ export abstract class InMemoryRepository<E extends Entity>
 
   protected async _get(id: string): Promise<E> {
     const _id = `${id}`
-    const entity = this.items.find(item => {
-      item.id === _id
-    })
+    const entity = this.items.find(item => item.id === _id)
     if (!entity) {
       throw new NotFoundError('Entity not found')
     }

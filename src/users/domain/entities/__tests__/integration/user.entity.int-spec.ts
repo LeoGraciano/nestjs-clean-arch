@@ -1,6 +1,6 @@
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data.builder'
 import { UserEntity, UserProps } from '../../user.entity'
-import { EntityValidationError } from '@/shared/domin/errors/validation-error'
+import { EntityValidationError } from '@/shared/domain/errors/validation-error'
 import {
   MAX_LENGTH_EMAIL,
   MAX_LENGTH_NAME,

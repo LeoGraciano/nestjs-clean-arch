@@ -5,6 +5,11 @@ import {
   UserValidatorFactory,
 } from '../../user.validator'
 import { UserProps } from '@/users/domain/entities/user.entity'
+import {
+  MAX_LENGTH_EMAIL,
+  MAX_LENGTH_NAME,
+  MAX_LENGTH_PASSWORD,
+} from '@/users/domain/entities/rules/const-values'
 
 let sut: UserValidator
 let props: UserProps
@@ -28,7 +33,7 @@ describe('UserValidator unit tests', () => {
       expect(sut.errors['name']).toStrictEqual([
         'name should not be empty',
         'name must be a string',
-        'name must be shorter than or equal to 255 characters',
+        `name must be shorter than or equal to ${MAX_LENGTH_NAME} characters`,
       ])
 
       isValid = sut.validate({
@@ -45,15 +50,15 @@ describe('UserValidator unit tests', () => {
       expect(isValid).toBeFalsy()
       expect(sut.errors['name']).toStrictEqual([
         'name must be a string',
-        'name must be shorter than or equal to 255 characters',
+        `name must be shorter than or equal to ${MAX_LENGTH_NAME} characters`,
       ])
       isValid = sut.validate({
         ...UserDataBuilder({}),
-        name: 'a'.repeat(256) as any,
+        name: 'a'.repeat(MAX_LENGTH_NAME + 1) as any,
       })
       expect(isValid).toBeFalsy()
       expect(sut.errors['name']).toStrictEqual([
-        'name must be shorter than or equal to 255 characters',
+        `name must be shorter than or equal to ${MAX_LENGTH_NAME} characters`,
       ])
     })
   })
@@ -65,7 +70,7 @@ describe('UserValidator unit tests', () => {
         'email must be an email',
         'email should not be empty',
         'email must be a string',
-        'email must be shorter than or equal to 255 characters',
+        `email must be shorter than or equal to ${MAX_LENGTH_EMAIL} characters`,
       ])
 
       isValid = sut.validate({
@@ -86,16 +91,16 @@ describe('UserValidator unit tests', () => {
       expect(sut.errors['email']).toStrictEqual([
         'email must be an email',
         'email must be a string',
-        'email must be shorter than or equal to 255 characters',
+        `email must be shorter than or equal to ${MAX_LENGTH_EMAIL} characters`,
       ])
       isValid = sut.validate({
         ...UserDataBuilder({}),
-        email: 'a'.repeat(256) as any,
+        email: 'a'.repeat(MAX_LENGTH_EMAIL + 1) as any,
       })
       expect(isValid).toBeFalsy()
       expect(sut.errors['email']).toStrictEqual([
         'email must be an email',
-        'email must be shorter than or equal to 255 characters',
+        `email must be shorter than or equal to ${MAX_LENGTH_EMAIL} characters`,
       ])
       isValid = sut.validate({
         ...UserDataBuilder({}),
@@ -112,7 +117,7 @@ describe('UserValidator unit tests', () => {
       expect(sut.errors['password']).toStrictEqual([
         'password should not be empty',
         'password must be a string',
-        'password must be shorter than or equal to 100 characters',
+        `password must be shorter than or equal to ${MAX_LENGTH_PASSWORD} characters`,
       ])
 
       isValid = sut.validate({
@@ -131,15 +136,15 @@ describe('UserValidator unit tests', () => {
       expect(isValid).toBeFalsy()
       expect(sut.errors['password']).toStrictEqual([
         'password must be a string',
-        'password must be shorter than or equal to 100 characters',
+        `password must be shorter than or equal to ${MAX_LENGTH_PASSWORD} characters`,
       ])
       isValid = sut.validate({
         ...UserDataBuilder({}),
-        password: 'a'.repeat(256) as any,
+        password: 'a'.repeat(MAX_LENGTH_PASSWORD + 1) as any,
       })
       expect(isValid).toBeFalsy()
       expect(sut.errors['password']).toStrictEqual([
-        'password must be shorter than or equal to 100 characters',
+        `password must be shorter than or equal to ${MAX_LENGTH_PASSWORD} characters`,
       ])
     })
   })
@@ -147,7 +152,6 @@ describe('UserValidator unit tests', () => {
     it('Invalidation cases for createAt field', () => {
       const isValid = sut.validate({ ...props, createAt: 1 as any })
       expect(isValid).toBeFalsy()
-      console.log(sut.errors)
       expect(sut.errors['createAt']).toStrictEqual([
         'createAt must be a Date instance',
       ])
@@ -155,7 +159,6 @@ describe('UserValidator unit tests', () => {
     it('Invalidation cases for createAt field', () => {
       const isValid = sut.validate({ ...props, createAt: '2023' as any })
       expect(isValid).toBeFalsy()
-      console.log(sut.errors)
       expect(sut.errors['createAt']).toStrictEqual([
         'createAt must be a Date instance',
       ])

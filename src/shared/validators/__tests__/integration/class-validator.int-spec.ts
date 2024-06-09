@@ -1,8 +1,9 @@
 import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator'
 import { ClassValidatorFields } from '../../class-validator-fields'
+import { MAX_LENGTH_NAME } from '@/users/domain/entities/rules/const-values'
 
 class StubRules {
-  @MaxLength(255)
+  @MaxLength(MAX_LENGTH_NAME)
   @IsString()
   @IsNotEmpty()
   name: string
@@ -30,7 +31,7 @@ describe('ClassValidatorFields integration tests', () => {
       name: [
         'name should not be empty',
         'name must be a string',
-        'name must be shorter than or equal to 255 characters',
+        `name must be shorter than or equal to ${MAX_LENGTH_NAME} characters`,
       ],
       price: [
         'price should not be empty',

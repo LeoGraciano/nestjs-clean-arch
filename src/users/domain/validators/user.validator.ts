@@ -8,20 +8,25 @@ import {
 } from 'class-validator'
 import { UserProps } from '../entities/user.entity'
 import { ClassValidatorFields } from '@/shared/validators/class-validator-fields'
+import {
+  MAX_LENGTH_EMAIL,
+  MAX_LENGTH_NAME,
+  MAX_LENGTH_PASSWORD,
+} from '../entities/rules/const-values'
 
 export class UserRules {
-  @MaxLength(255)
+  @MaxLength(MAX_LENGTH_NAME)
   @IsString()
   @IsNotEmpty()
   name: string
 
-  @MaxLength(255)
+  @MaxLength(MAX_LENGTH_EMAIL)
   @IsString()
   @IsNotEmpty()
   @IsEmail()
   email: string
 
-  @MaxLength(100)
+  @MaxLength(MAX_LENGTH_PASSWORD)
   @IsString()
   @IsNotEmpty()
   password: string

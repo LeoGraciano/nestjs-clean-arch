@@ -1,6 +1,11 @@
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data.builder'
 import { UserEntity, UserProps } from '../../user.entity'
 import { EntityValidationError } from '@/shared/domin/errors/validation-error'
+import {
+  MAX_LENGTH_EMAIL,
+  MAX_LENGTH_NAME,
+  MAX_LENGTH_PASSWORD,
+} from '../../rules/const-values'
 
 describe('UserEntity integration tests', () => {
   describe('Constructor method', () => {
@@ -19,7 +24,7 @@ describe('UserEntity integration tests', () => {
 
       props = {
         ...UserDataBuilder({}),
-        name: 'a'.repeat(256),
+        name: 'a'.repeat(MAX_LENGTH_NAME + 1),
       }
       expect(() => new UserEntity(props)).toThrow(EntityValidationError)
     })
@@ -38,7 +43,7 @@ describe('UserEntity integration tests', () => {
 
       props = {
         ...UserDataBuilder({}),
-        email: 'a'.repeat(256),
+        email: 'a'.repeat(MAX_LENGTH_EMAIL + 1),
       }
       expect(() => new UserEntity(props)).toThrow(EntityValidationError)
       props = {
@@ -62,7 +67,7 @@ describe('UserEntity integration tests', () => {
 
       props = {
         ...UserDataBuilder({}),
-        password: 'a'.repeat(101),
+        password: 'a'.repeat(MAX_LENGTH_PASSWORD + 1),
       }
       expect(() => new UserEntity(props)).toThrow(EntityValidationError)
     })
@@ -79,6 +84,58 @@ describe('UserEntity integration tests', () => {
         ...UserDataBuilder({}),
       }
       new UserEntity(props)
+    })
+  })
+  describe('Update method', () => {
+    let props: UserProps
+    let entity: UserEntity
+
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      entity = new UserEntity(props)
+    })
+    it('Should update a user', () => {
+      expect(() => entity.update(null)).toThrow(EntityValidationError)
+      expect(() => entity.update('')).toThrow(EntityValidationError)
+      expect(() => entity.update('a'.repeat(MAX_LENGTH_NAME + 1))).toThrow(
+        EntityValidationError,
+      )
+      expect(() => entity.update(10 as any)).toThrow(EntityValidationError)
+    })
+    it('Should a valid user', () => {
+      expect.assertions(0)
+      const props = {
+        ...UserDataBuilder({}),
+      }
+      const entity = new UserEntity(props)
+      entity.update('other name')
+    })
+  })
+  describe('UpdatePassword method', () => {
+    let props: UserProps
+    let entity: UserEntity
+
+    beforeEach(() => {
+      props = UserDataBuilder({})
+      entity = new UserEntity(props)
+    })
+    it('Should a invalid user using password field', () => {
+      expect(() => entity.updatePassword('')).toThrow(EntityValidationError)
+      expect(() => entity.updatePassword(null)).toThrow(EntityValidationError)
+      expect(() =>
+        entity.updatePassword('a'.repeat(MAX_LENGTH_PASSWORD + 1)),
+      ).toThrow(EntityValidationError)
+      expect(() => entity.updatePassword(10 as any)).toThrow(
+        EntityValidationError,
+      )
+    })
+    it('Should a valid user', () => {
+      expect.assertions(0)
+      const props = {
+        ...UserDataBuilder({}),
+      }
+      const entity = new UserEntity(props)
+      entity.updatePassword('other password')
     })
   })
 })

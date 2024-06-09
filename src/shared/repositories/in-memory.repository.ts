@@ -10,12 +10,12 @@ export abstract class InMemoryRepository<E extends Entity>
     this.items.push(entity)
   }
 
-  async findById(id: string): Promise<E> {
-    return this._get(id)
+  async findAll(): Promise<E[]> {
+    return this.items
   }
 
-  async findAll(): Promise<E[]> {
-    throw this.items
+  async findById(id: string): Promise<E> {
+    return this._get(id)
   }
 
   async update(entity: E): Promise<void> {
@@ -25,7 +25,7 @@ export abstract class InMemoryRepository<E extends Entity>
 
   async delete(id: string): Promise<void> {
     const index = await this._getIndex(id)
-    this.items.slice(index, 1)
+    this.items.splice(index, 1)
   }
 
   protected async _get(id: string): Promise<E> {

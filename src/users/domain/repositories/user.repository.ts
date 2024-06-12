@@ -1,5 +1,5 @@
+import { SearchableRepositoryInterface } from '@/shared/repositories/searchable-contracts'
 import { UserEntity } from '../entities/user.entity'
-import { SearchableRepositoryInterface } from '@/shared/repositories/searchable-repository-contracts'
 
 export interface UserRepositoryInterface
   extends SearchableRepositoryInterface<UserEntity, any, any> {

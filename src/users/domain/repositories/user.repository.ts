@@ -1,8 +1,8 @@
-import { SearchableRepositoryInterface } from '@/shared/repositories/searchable-contracts'
+import { SearchableRepositoryInterface } from '@/shared/domain/repositories/searchable-contracts'
 import {
   SearchParams as DefaultSearchParams,
   SearchResult as DefaultSearchResult,
-} from '@/shared/repositories/searchable-repository'
+} from '@/shared/domain/repositories/searchable-repository'
 import { UserEntity } from '../entities/user.entity'
 
 export namespace UserRepository {

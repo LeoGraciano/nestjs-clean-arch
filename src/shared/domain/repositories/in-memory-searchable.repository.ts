@@ -1,4 +1,4 @@
-import { Entity } from '../domain/entities/entity'
+import { Entity } from '../entities/entity'
 import { InMemoryRepository } from './in-memory.repository'
 import { SearchableRepositoryInterface } from './searchable-contracts'
 import { SearchParams, SearchResult } from './searchable-repository'
@@ -44,7 +44,6 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     if (!sort || !this.sortableFields.includes(sort)) {
       return items
     }
-
     return [...items].sort((a, b) => {
       if (a.props[sort] < b.props[sort]) {
         return sortDirection === 'asc' ? -1 : 1

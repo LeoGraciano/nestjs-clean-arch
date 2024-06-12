@@ -1,5 +1,5 @@
-import { Entity } from '../domain/entities/entity'
-import { DEFAULT_LIMIT_PAGE } from '../domain/entities/rules/const-values'
+import { Entity } from '../entities/entity'
+import { DEFAULT_LIMIT_PAGE } from '../entities/rules/const-values'
 
 export type SortDirection = 'asc' | 'desc'
 
@@ -11,19 +11,19 @@ export type SearchProps<Filter = string> = {
   filter?: Filter | null
 }
 
-export type SearchResultProps<E extends Entity, Filter> = {
+export type SearchResultProps<E extends Entity, Filter = string> = {
   items: E[]
   total: number
   currentPage: number
   perPage: number
   sort: string | null
   sortDirection: SortDirection | null
-  filter?: Filter | null
+  filter: Filter | null
 }
 
 export class SearchParams<Filter = string> {
   protected _page: number
-  protected _perPage: number
+  protected _perPage: number = DEFAULT_LIMIT_PAGE
   protected _sort: string | null
   protected _sortDirection: SortDirection | null
   protected _filter: Filter | null
@@ -80,7 +80,7 @@ export class SearchParams<Filter = string> {
       return
     }
     const dir = `${value}`.toLowerCase()
-    this._sortDirection = dir !== 'asc' ? 'desc' : dir
+    this._sortDirection = dir !== 'asc' && dir !== 'desc' ? 'desc' : dir
   }
 
   get filter(): Filter | null {

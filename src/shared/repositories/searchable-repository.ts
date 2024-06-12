@@ -1,4 +1,5 @@
 import { Entity } from '../domain/entities/entity'
+import { DEFAULT_LIMIT_PAGE } from '../domain/entities/rules/const-values'
 import { RepositoryInterface } from './repository-contracts'
 
 export type SortDirection = 'asc' | 'desc'
@@ -58,7 +59,7 @@ export class SearchParams {
       _perPage === undefined ||
       parseInt(_perPage as any) !== _perPage
     ) {
-      _perPage = 15
+      _perPage = DEFAULT_LIMIT_PAGE
     }
     this._perPage = _perPage
   }

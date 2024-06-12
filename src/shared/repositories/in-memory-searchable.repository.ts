@@ -41,21 +41,16 @@ export abstract class InMemorySearchableRepository<E extends Entity>
     sort: string | null,
     sortDirection: string | null,
   ): Promise<E[]> {
-    if (!sort || !sortDirection) {
+    if (!sort || !this.sortableFields.includes(sort)) {
       return items
     }
 
-    const dir = `${sortDirection}`.toLowerCase()
-    const field = `${sort}`.toLowerCase()
-    if (!this.sortableFields.includes(field)) {
-      return items
-    }
     return [...items].sort((a, b) => {
-      if (a[field] < b[field]) {
-        return dir === 'asc' ? -1 : 1
+      if (a.props[sort] < b.props[sort]) {
+        return sortDirection === 'asc' ? -1 : 1
       }
-      if (a[field] > b[field]) {
-        return dir === 'asc' ? 1 : -1
+      if (a.props[sort] > b.props[sort]) {
+        return sortDirection === 'asc' ? 1 : -1
       }
       return 0
     })

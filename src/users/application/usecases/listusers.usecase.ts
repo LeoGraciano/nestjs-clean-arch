@@ -1,5 +1,5 @@
 import { UserRepository } from '@/users/domain/repositories/user.repository'
-import { UserOutput, userOutputMapper } from '../dtos/user-output'
+import { UserOutput, UserOutputMapper } from '../dtos/user-output'
 import { UseCase as DefaultUseCase } from '@/shared/application/use-cases'
 import { SearchInput } from '@/shared/application/dtos/search-input'
 import {
@@ -21,7 +21,7 @@ export namespace ListUsersUseCase {
     }
     private toOutput(searchResult: UserRepository.SearchResult): Output {
       const items = searchResult.items.map(item => {
-        return userOutputMapper.toOutput(item)
+        return UserOutputMapper.toOutput(item)
       })
       return PaginationOutputMapper.toOutput(items, searchResult)
     }

@@ -8,7 +8,7 @@ export type UserOutput = {
   createdAt: Date
 }
 
-export class userOutputMapper {
+export class UserOutputMapper {
   static toOutput(entity: UserEntity): UserOutput {
     return entity.toJSON()
   }

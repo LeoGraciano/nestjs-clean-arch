@@ -3,6 +3,7 @@ import { UserOutput, UserOutputMapper } from '../dtos/user-output'
 import { UseCase as DefaultUseCase } from '@/shared/application/use-cases'
 import { InvalidPasswordError } from '@/shared/application/errors/invalid-password-error'
 import { HashProvider } from '@/shared/application/providers/hash-provider'
+
 export namespace UpdateUserUseCase {
   export type Input = {
     id: string

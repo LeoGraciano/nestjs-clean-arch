@@ -4,7 +4,7 @@ import { UserEntity } from '@/users/domain/entities/user.entity'
 import { HashProvider } from '@/shared/application/providers/hash-provider'
 import { UserOutput, UserOutputMapper } from '../dtos/user-output'
 import { UseCase as DefaultUseCase } from '@/shared/application/use-cases'
-export namespace SignupUseCase {
+export namespace SignUpUseCase {
   export type Input = {
     name: string
     email: string

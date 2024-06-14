@@ -52,4 +52,48 @@ describe('ListUsersUseCase unit tests', () => {
       perPage: 2,
     })
   })
+  it('Should return the users ordered by createdAt ', async () => {
+    const createAt = new Date()
+    const items = [
+      new UserEntity(UserDataBuilder({ createdAt: createAt })),
+      new UserEntity(
+        UserDataBuilder({ createdAt: new Date(createAt.getTime() + 1) }),
+      ),
+    ]
+    repository.items = items
+
+    const output = await sut.execute({})
+    expect(output).toStrictEqual({
+      items: [...items].reverse().map(item => item.toJSON()),
+      total: 2,
+      currentPage: 1,
+      lastPage: 1,
+      perPage: 15,
+    })
+  })
+  it('Should return the users ordered by createdAt ', async () => {
+    const items = [
+      new UserEntity(UserDataBuilder({ name: 'a' })),
+      new UserEntity(UserDataBuilder({ name: 'AA' })),
+      new UserEntity(UserDataBuilder({ name: 'Aa' })),
+      new UserEntity(UserDataBuilder({ name: 'b' })),
+      new UserEntity(UserDataBuilder({ name: 'c' })),
+    ]
+    repository.items = items
+
+    const output = await sut.execute({
+      page: 1,
+      perPage: 2,
+      sort: 'name',
+      sortDirection: 'asc',
+      filter: 'a',
+    })
+    expect(output).toStrictEqual({
+      items: [items[1].toJSON(), items[2].toJSON()],
+      total: 3,
+      currentPage: 1,
+      lastPage: 2,
+      perPage: 2,
+    })
+  })
 })

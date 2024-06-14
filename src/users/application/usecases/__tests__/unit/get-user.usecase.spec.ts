@@ -1,6 +1,6 @@
 import { UserInMemoryRepository } from '@/users/infrastructure/database/in-memory/reposotires/user-in-memory.repository'
 import { UserDataBuilder } from '@/users/domain/testing/helpers/user-data.builder'
-import { GetUserUseCase } from '../../getuser.usecase'
+import { GetUserUseCase } from '../../get-user.usecase'
 import { NotFoundError } from '@/shared/domain/errors/not-found-error'
 import { UserEntity } from '@/users/domain/entities/user.entity'
 

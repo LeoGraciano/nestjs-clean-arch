@@ -8,6 +8,9 @@ import { UpdateUserUseCase } from '@/users/application/usecases/update-user.usec
 import { UpdateUserDto } from '../../dtos/update-user.dto'
 import { UpdatePasswordUseCase } from '@/users/application/usecases/update-password.usecase'
 import { UpdatePasswordDto } from '../../dtos/update-password.dto'
+import { GetUserUseCase } from '@/users/application/usecases/get-user.usecase'
+import { ListUsersUseCase } from '@/users/application/usecases/lis-users.usecase'
+import { ListUserDto } from '../../dtos/list-user.dto'
 
 describe('UsersController', () => {
   let sut: UsersController
@@ -104,5 +107,39 @@ describe('UsersController', () => {
     expect(mockDeleteUserUseCase.execute).toHaveBeenCalledWith({
       id,
     })
+  })
+  it('should find one user', async () => {
+    const output: GetUserUseCase.Output = props
+    const mockGetUserUserUseCase = {
+      execute: jest.fn().mockResolvedValue(Promise.resolve(output)),
+    }
+    sut['getUserUseCase'] = mockGetUserUserUseCase as any
+
+    const result = await sut.findOne(id)
+    expect(output).toStrictEqual(result)
+    expect(mockGetUserUserUseCase.execute).toHaveBeenCalledWith({
+      id,
+    })
+  })
+  it('should list users', async () => {
+    const output: ListUsersUseCase.Output = {
+      items: [props],
+      currentPage: 1,
+      lastPage: 1,
+      perPage: 1,
+      total: 1,
+    }
+    const mockListUsersUseCase = {
+      execute: jest.fn().mockResolvedValue(Promise.resolve(output)),
+    }
+    sut['listUsersUseCase'] = mockListUsersUseCase as any
+    const searchParams = {
+      page: 1,
+      perPage: 1,
+    }
+
+    const result = await sut.search(searchParams)
+    expect(output).toStrictEqual(result)
+    expect(mockListUsersUseCase.execute).toHaveBeenCalledWith(searchParams)
   })
 })

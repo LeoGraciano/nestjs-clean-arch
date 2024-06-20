@@ -1,13 +1,10 @@
-import fs from 'fs'
+import { execSync } from 'node:child_process'
+
 export function setupPrismaTests() {
-  const envFilePath = '.env.test'
-  const envConfig = fs.readFileSync(envFilePath, 'utf8')
-  const match = envConfig.match(/DATABASE_URL="(.+)"/)
-
-  if (!match || match.length < 2) {
-    throw new Error(`Failed to find DATABASE_URL in ${envFilePath}`)
-  }
-
-  const databaseUrl = match[1]
-  process.env.DATABASE_URL = databaseUrl
+  execSync(
+    'yarn dotenv -e .env.test yarn prisma generate --schema ./src/shared/infrastructure/database/prisma/schema.prisma',
+  )
+  execSync(
+    'yarn dotenv -e .env.test yarn prisma migrate deploy --schema ./src/users/infrastructure/database/prisma/users.prisma',
+  )
 }
